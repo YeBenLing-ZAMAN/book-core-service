@@ -11,10 +11,23 @@ router.get('/', CategoryController.getAllCategories);
 router.post(
   '/create-category',
   auth(ENUM_USER_ROLE.ADMIN),
-  validateRequest(CategoryValidation.createCategoryValidation),
+  validateRequest(CategoryValidation.createCategory),
   CategoryController.createCategory
 );
 
 router.get('/:id', CategoryController.getSingleCategory);
+
+router.patch(
+  '/:id',
+  auth(ENUM_USER_ROLE.ADMIN),
+  validateRequest(CategoryValidation.updateCategory),
+  CategoryController.updateCategory
+);
+
+router.delete(
+  '/:id',
+  auth(ENUM_USER_ROLE.ADMIN),
+  CategoryController.deleteCategory
+);
 
 export const CategoryRouter = router;
