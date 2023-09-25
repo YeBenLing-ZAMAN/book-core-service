@@ -1,4 +1,6 @@
 import { Order, Prisma } from '@prisma/client';
+import httpStatus from 'http-status';
+import ApiError from '../../../errors/ApiError';
 import prisma from '../../../shared/prisma';
 
 const createOrder = async (data: Order, userId: string): Promise<Order> => {
@@ -33,7 +35,31 @@ const getAllOrders = async (
   return result;
 };
 
+const getSingleOrder = async (
+  id: string,
+  userId: string,
+  role: string
+): Promise<Order | null> => {
+  const result = await prisma.order.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (role === 'customer') {
+    if (result?.userId !== userId) {
+      throw new ApiError(
+        httpStatus.FORBIDDEN,
+        'Access denied to get this data for you.'
+      );
+    }
+  }
+
+  return result;
+};
+
 export const OrderService = {
   createOrder,
   getAllOrders,
+  getSingleOrder,
 };
