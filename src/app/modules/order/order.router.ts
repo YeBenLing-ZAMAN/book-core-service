@@ -6,6 +6,12 @@ import { OrderController } from './order.controller';
 import { OrderValidation } from './order.validation';
 const router = express.Router();
 
+router.get(
+  '/',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.CUSTOMER),
+  OrderController.getAllOrders
+);
+
 router.post(
   '/create-order',
   auth(ENUM_USER_ROLE.CUSTOMER),
