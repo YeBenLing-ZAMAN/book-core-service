@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const create = z.object({
+const createBook = z.object({
   body: z.object({
     title: z.string({
       required_error: 'title is required',
@@ -23,6 +23,18 @@ const create = z.object({
   }),
 });
 
+const updateBook = z.object({
+  body: z.object({
+    title: z.string().optional(),
+    author: z.string().optional(),
+    genre: z.string().optional(),
+    price: z.number().optional(),
+    publicationDate: z.string().optional(),
+    categoryId: z.string().optional(),
+  }),
+});
+
 export const BookValidation = {
-  create,
+  createBook,
+  updateBook,
 };

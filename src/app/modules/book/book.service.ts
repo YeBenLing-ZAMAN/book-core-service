@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Book } from '@prisma/client';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
@@ -93,10 +94,10 @@ const getAllBooks = async (
   };
 };
 
-const getSingleCategoryBooks = async (
+const getSingleCategoryBooksOrBookId = async (
   categoryId: string,
   options: IPaginationOptions
-): Promise<IGenericResponse<Book[] | null>> => {
+): Promise<any> => {
   const { page, size, skip } = paginationHelpers.calculatePagination(options);
 
   const result = await prisma.book.findMany({
@@ -115,26 +116,62 @@ const getSingleCategoryBooks = async (
           },
   });
 
-  const total = await prisma.book.count();
+  if (result.length > 0) {
+    const total = await prisma.book.count();
 
-  let totalPage = 0;
-  if (typeof size !== 'undefined') {
-    totalPage = Math.ceil(total / size);
+    let totalPage = 0;
+    if (typeof size !== 'undefined') {
+      totalPage = Math.ceil(total / size);
+    }
+
+    return {
+      meta: {
+        page,
+        size,
+        total,
+        totalPage,
+      },
+      data: result,
+    };
   }
 
-  return {
-    meta: {
-      page,
-      size,
-      total,
-      totalPage,
+  const singleBookResult = await prisma.book.findUnique({
+    where: {
+      id: categoryId,
     },
-    data: result,
-  };
+  });
+
+  return singleBookResult;
+};
+
+const updateBook = async (
+  id: string,
+  payload: Partial<Book>
+): Promise<Book | null> => {
+  const result = await prisma.book.update({
+    where: {
+      id,
+    },
+    data: payload,
+  });
+
+  return result;
+};
+
+const deleteBook = async (id: string): Promise<Book | null> => {
+  const result = await prisma.book.delete({
+    where: {
+      id,
+    },
+  });
+
+  return result;
 };
 
 export const BookService = {
   createBook,
   getAllBooks,
-  getSingleCategoryBooks,
+  getSingleCategoryBooksOrBookId,
+  updateBook,
+  deleteBook,
 };

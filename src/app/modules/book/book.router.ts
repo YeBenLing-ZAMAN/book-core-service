@@ -11,10 +11,19 @@ router.get('/', BookController.getAllBooks);
 router.post(
   '/create-book',
   auth(ENUM_USER_ROLE.ADMIN),
-  validateRequest(BookValidation.create),
+  validateRequest(BookValidation.createBook),
   BookController.createBook
 );
 
-router.get('/:categoryId', BookController.getSingleCategoryBooks);
+router.get('/:categoryId', BookController.getSingleCategoryBooksOrBookId);
+
+router.patch(
+  '/:id',
+  auth(ENUM_USER_ROLE.ADMIN),
+  validateRequest(BookValidation.updateBook),
+  BookController.updateBook
+);
+
+router.delete('/:id', auth(ENUM_USER_ROLE.ADMIN), BookController.deleteBook);
 
 export const BookRouter = router;
