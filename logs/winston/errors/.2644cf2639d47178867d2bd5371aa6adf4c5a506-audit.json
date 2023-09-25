@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "D:\\FILE 2\\programming code\\apollo course\\mil-07\\assingement-8\\logs\\winston\\errors\\.2644cf2639d47178867d2bd5371aa6adf4c5a506-audit.json",
+    "files": [
+        {
+            "date": 1695647181044,
+            "name": "D:\\FILE 2\\programming code\\apollo course\\mil-07\\assingement-8\\logs\\winston\\errors\\phu-2023-25-09-19-error.log",
+            "hash": "a9e951006b916be07af801d4e3cd7fad72fd27e50b2aab2965d6b7f9b8144912"
+        }
+    ],
+    "hashType": "sha256"
+}
