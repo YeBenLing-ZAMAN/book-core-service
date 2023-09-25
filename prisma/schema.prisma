@@ -61,8 +61,8 @@ model Book {
 model Order {
   id           String      @id @default(uuid())
   userId       String
-  orderedBooks Json
   status       OrderStatus @default(pending)
+  orderedBooks Json
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
 
