@@ -25,7 +25,22 @@ const getAllBooks: RequestHandler = catchAsync(async (req, res) => {
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: 'Categories retrieved successfully',
+    message: 'Books retrieved successfully',
+    data: result,
+  });
+});
+
+const getSingleCategoryBooks: RequestHandler = catchAsync(async (req, res) => {
+  const options = pick(req.query, ['size', 'page', 'sortBy', 'sortOrder']);
+  const result = await BookService.getSingleCategoryBooks(
+    req.params.categoryId,
+    options
+  );
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Books retrieved successfully',
     data: result,
   });
 });
@@ -33,4 +48,5 @@ const getAllBooks: RequestHandler = catchAsync(async (req, res) => {
 export const BookController = {
   createBook,
   getAllBooks,
+  getSingleCategoryBooks,
 };
